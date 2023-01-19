@@ -5,20 +5,23 @@
 npm install
 ```
 
-### Compiles and hot-reloads for development
+## Compiles and hot-reloads for development
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## Overview
+This project aims to replicate an iOS Calculator using Vue.js.
+![iOS Calculator](./src/assets/screenshot.png)
 
-### Lints and fixes files
-```
-npm run lint
-```
+## Features
+The features of the application include:
+> Addition
+> Subtraction
+> Multiplication
+> Division
+> Percentage
+> Toggle Positive/Negative
+> Clear All (AC)
+> Clear Current (C)
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
