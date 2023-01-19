@@ -34,7 +34,10 @@ The features of the application include:
 > Clear Current (C)
 
 ## Technology Stack
-Bootstrap
+Vue.js
+> https://vuejs.org/
+
+Bootstraps
 > https://getbootstrap.com/
 
 Boostrap Icon
