@@ -1,14 +1,17 @@
 <template>
   <div class="p-3">
-    <p id="answer" class="text-end mb-0 me-3">{{ans}}</p>
+    <p id="answer" class="text-end mb-0 me-3 text-truncate">{{ans}}</p>
     <div class="d-flex gap-3 justify-content-center mb-3">
-      <button @click="clearAll()" class="circ btn bg-grey text-black rounded-circle d-flex">
+      <button @click="clearAll()" v-if='x == "" || y == ""' class="circ btn bg-grey text-black rounded-circle d-flex">
         <p class="text-center m-auto p-0" style="font-weight: 500">AC</p>
+      </button>
+      <button @click="clearAns()" v-else class="circ btn bg-grey text-black rounded-circle d-flex">
+        <p class="text-center m-auto p-0" style="font-weight: 500">C</p>
       </button>
       <button @click="toggleNegative()" class="circ btn bg-grey text-black rounded-circle d-flex">
         <p class="text-center m-auto p-0"><i class="bi bi-plus-slash-minus"></i></p>
       </button>
-      <button class="circ btn bg-grey text-black rounded-circle d-flex">
+      <button @click="setPercentage()" class="circ btn bg-grey text-black rounded-circle d-flex">
         <p class="text-center m-auto p-0"><i class="bi bi-percent"></i></p>
       </button>
       <button id="divide" @click="setNumber('/')" class="circ btn btn-warning text-white rounded-circle d-flex">
@@ -77,6 +80,7 @@ export default {
   data() {
     return {
       ans: '0',
+      prev: '',
       x: '',
       y: '',
       isOperator: false,
@@ -86,6 +90,7 @@ export default {
     async math() {
       let query = ''
       query = this.x + this.y
+      console.log('query', query)
 
       let encoded = encodeURIComponent(query)
       const response = await fetch(`http://api.mathjs.org/v4/?expr=${encoded}`)
@@ -98,84 +103,107 @@ export default {
 
     setNumber(num) {
       if (typeof num == 'string' && num != '.') {
+        this.operatorCount++
         this.isOperator = true
+
         this.resetButtons()
-        if (num == '+') {
-          document.getElementById('plus').classList.remove('text-white')
-          document.getElementById('plus').classList.add('bg-white')
-          document.getElementById('plus').classList.add('text-warning')
-        }
-
-        if (num == '-') {
-          document.getElementById('minus').classList.remove('text-white')
-          document.getElementById('minus').classList.add('bg-white')
-          document.getElementById('minus').classList.add('text-warning')
-        }
-
-        if (num == '*') {
-          document.getElementById('multiply').classList.remove('text-white')
-          document.getElementById('multiply').classList.add('bg-white')
-          document.getElementById('multiply').classList.add('text-warning')
-        }
-
-        if (num == '/') {
-          document.getElementById('divide').classList.remove('text-white')
-          document.getElementById('divide').classList.add('bg-white')
-          document.getElementById('divide').classList.add('text-warning')
-        }
+        this.setButtonStyle(num)
 
         this.x = this.y
+        this.prev = this.y
         this.y = ''
         this.x = this.x + String(num)
-        console.log ('x', this.x, 'y', this.y)
-
       } else {
         if (this.isOperator) {
           this.ans = String(num)
           this.isOperator = false
         } else {
-          if (this.ans == '0')
+          if (this.ans == '0' && num != '.')
             this.ans = String(num)
           else
             this.ans = this.ans + String(num)
         }
-
         this.y = this.y + String(num)
+      }
+    },
 
-        console.log ('x', this.x, 'y', this.y)
+    setButtonStyle(num) {
+      if (num == '+') {
+        document.getElementById('plus').classList.remove('text-white')
+        document.getElementById('plus').classList.add('bg-white')
+        document.getElementById('plus').classList.add('text-warning')
+      }
+
+      if (num == '-') {
+        document.getElementById('minus').classList.remove('text-white')
+        document.getElementById('minus').classList.add('bg-white')
+        document.getElementById('minus').classList.add('text-warning')
+      }
+
+      if (num == '*') {
+        document.getElementById('multiply').classList.remove('text-white')
+        document.getElementById('multiply').classList.add('bg-white')
+        document.getElementById('multiply').classList.add('text-warning')
+      }
+
+      if (num == '/') {
+        document.getElementById('divide').classList.remove('text-white')
+        document.getElementById('divide').classList.add('bg-white')
+        document.getElementById('divide').classList.add('text-warning')
       }
     },
 
     resetButtons() {
-        document.getElementById('plus').classList.remove('bg-white')
-        document.getElementById('plus').classList.remove('text-warning')
-        document.getElementById('minus').classList.remove('bg-white')
-        document.getElementById('minus').classList.remove('text-warning')
-        document.getElementById('multiply').classList.remove('bg-white')
-        document.getElementById('multiply').classList.remove('text-warning')
-        document.getElementById('divide').classList.remove('bg-white')
-        document.getElementById('divide').classList.remove('text-warning')
+      document.getElementById('plus').classList.remove('bg-white')
+      document.getElementById('plus').classList.remove('text-warning')
+      document.getElementById('minus').classList.remove('bg-white')
+      document.getElementById('minus').classList.remove('text-warning')
+      document.getElementById('multiply').classList.remove('bg-white')
+      document.getElementById('multiply').classList.remove('text-warning')
+      document.getElementById('divide').classList.remove('bg-white')
+      document.getElementById('divide').classList.remove('text-warning')
 
-        document.getElementById('plus').classList.add('text-white')
-        document.getElementById('minus').classList.add('text-white')
-        document.getElementById('multiply').classList.add('text-white')
-        document.getElementById('divide').classList.add('text-white')
+      document.getElementById('plus').classList.add('text-white')
+      document.getElementById('minus').classList.add('text-white')
+      document.getElementById('multiply').classList.add('text-white')
+      document.getElementById('divide').classList.add('text-white')
     },
 
     clearAll() {
       this.ans = '0'
       this.x = ''
       this.y = ''
+      this.prev = ''
+      this.resetButtons()
+    },
+
+    clearAns() {
+      this.ans = '0'
+      this.y = ''
     },
 
     toggleNegative() {
-      console.log(this.ans)
       if (this.ans.charAt(0) != '-') {
         this.ans = '-' + this.ans
       } else {
         this.ans = this.ans.substring(1)
       }
       this.y = this.ans
+    },
+
+    setPercentage() {
+      let percent = parseFloat(this.ans)/100
+      let result = 0
+
+      if (this.x.charAt(this.x.length-1) == '+' || this.x.charAt(this.x.length-1) == '-') {
+        result = parseFloat(this.prev * percent).toFixed(3)
+      }
+      else {
+        result = percent.toFixed(3)
+      }
+
+      this.ans = String(result)
+      this.y = String(result)
     }
   }
 }
@@ -183,11 +211,12 @@ export default {
 
 <style>
 body {
-    background-color: #000
+  background-color: #000;
+  overflow: hidden;
 }
 
 #answer {
-    margin-top:23vh;
+    margin-top:24vh;
     color: #fff;
     font-size: 90px;
     
