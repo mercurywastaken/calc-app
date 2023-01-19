@@ -11,8 +11,9 @@ npm run serve
 ```
 
 ## Overview
-This project aims to replicate an iOS Calculator using Vue.js.
 ![iOS Calculator](./src/assets/screenshot.png)
+
+This project aims to replicate an iOS Calculator using Vue.js.
 
 ## Features
 The features of the application include:
