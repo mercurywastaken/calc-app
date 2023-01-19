@@ -1,5 +1,5 @@
 <template>
-  <div class="p-3">
+  <div class="p-3" style="width: 414px; height: 896px">
     <p id="answer" class="text-end mb-0 me-3 text-truncate">{{ans}}</p>
     <div class="d-flex gap-3 justify-content-center mb-3">
       <button @click="clearAll()" v-if='x == "" || y == ""' class="circ btn bg-grey text-black rounded-circle d-flex">

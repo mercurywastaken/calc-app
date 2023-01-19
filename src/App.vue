@@ -1,5 +1,5 @@
 <template>
-  <img alt="Vue logo" class="top-0 w-100" src="./assets/Notificationtray.png">
+  <img alt="Vue logo" style="width: 414px" class="top-0" src="./assets/Notificationtray.png">
   <CalculatorApp/>
 </template>
 
