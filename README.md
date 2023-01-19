@@ -11,9 +11,9 @@ npm run serve
 ```
 
 ## Overview
-![iOS Calculator](./src/assets/screenshot.png)
-
 This project aims to replicate an iOS Calculator using Vue.js.
+
+![iOS Calculator](./src/assets/screenshot.png)
 
 ## Features
 The features of the application include:
@@ -26,3 +26,15 @@ The features of the application include:
 > Clear All (AC)
 > Clear Current (C)
 
+## Technology Stack
+Bootstrap
+> https://getbootstrap.com/
+
+Boostrap Icon
+> https://icons.getbootstrap.com/
+
+FontAwesome
+> https://fontawesome.com/start
+
+## math.js
+The project uses [math.js](https://api.mathjs.org/) to execute the mathematical operations.
