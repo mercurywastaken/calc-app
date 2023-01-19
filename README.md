@@ -47,4 +47,4 @@ FontAwesome
 > https://fontawesome.com/start
 
 ## math.js
-The project uses [math.js](https://api.mathjs.org/) to execute the mathematical operations.
+The application uses [math.js](https://api.mathjs.org/) to execute the mathematical operations.
