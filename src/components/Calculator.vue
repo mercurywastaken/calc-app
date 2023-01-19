@@ -5,7 +5,7 @@
       <button @click="clearAll()" class="circ btn bg-grey text-black rounded-circle d-flex">
         <p class="text-center m-auto p-0" style="font-weight: 500">AC</p>
       </button>
-      <button class="circ btn bg-grey text-black rounded-circle d-flex">
+      <button @click="toggleNegative()" class="circ btn bg-grey text-black rounded-circle d-flex">
         <p class="text-center m-auto p-0"><i class="bi bi-plus-slash-minus"></i></p>
       </button>
       <button class="circ btn bg-grey text-black rounded-circle d-flex">
@@ -64,7 +64,7 @@
       <button @click="setNumber('.')" class="circ btn bg-darkgrey text-white rounded-circle d-flex">
         <p class="text-center m-auto p-0" style="font-weight: 500">.</p>
       </button>
-      <button @click="math(query)" class="circ btn btn-warning text-white rounded-circle d-flex">
+      <button @click="math()" class="circ btn btn-warning text-white rounded-circle d-flex">
         <p class="text-center m-auto p-0"><i class="fa-solid fa-equals"></i></p>
       </button>
     </div>
@@ -77,19 +77,22 @@ export default {
   data() {
     return {
       ans: '0',
-      query: '',
-      isOperator: false
+      x: '',
+      y: '',
+      isOperator: false,
     }
   },
   methods: {
-    async math(query) {
+    async math() {
+      let query = ''
+      query = this.x + this.y
+
       let encoded = encodeURIComponent(query)
-      console.log(encoded)
       const response = await fetch(`http://api.mathjs.org/v4/?expr=${encoded}`)
       const data = await response.json()
-      console.log(data)
       this.ans = String(data)
-      this.query = String(data)
+      this.y = String(data)
+      this.x = ''
       this.resetButtons()
     },
 
@@ -121,19 +124,26 @@ export default {
           document.getElementById('divide').classList.add('text-warning')
         }
 
+        this.x = this.y
+        this.y = ''
+        this.x = this.x + String(num)
+        console.log ('x', this.x, 'y', this.y)
+
       } else {
         if (this.isOperator) {
-          this.ans = num
+          this.ans = String(num)
           this.isOperator = false
         } else {
           if (this.ans == '0')
-            this.ans = num
+            this.ans = String(num)
           else
             this.ans = this.ans + String(num)
         }
+
+        this.y = this.y + String(num)
+
+        console.log ('x', this.x, 'y', this.y)
       }
-      this.query = this.query + String(num)
-      console.log(this.query)
     },
 
     resetButtons() {
@@ -153,9 +163,20 @@ export default {
     },
 
     clearAll() {
-      this.query = ''
       this.ans = '0'
+      this.x = ''
+      this.y = ''
     },
+
+    toggleNegative() {
+      console.log(this.ans)
+      if (this.ans.charAt(0) != '-') {
+        this.ans = '-' + this.ans
+      } else {
+        this.ans = this.ans.substring(1)
+      }
+      this.y = this.ans
+    }
   }
 }
 </script>
